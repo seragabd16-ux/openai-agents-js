@@ -1,78 +1,256 @@
 ---
 title: OpenAI Agents SDK TypeScript
-description: The OpenAI Agents SDK for TypeScript enables you to build agentic AI apps in a lightweight, easy-to-use package with very few abstractions.
+description: Build and scale agentic AI applications with a single, cohesive toolkit that unifies features, packages, and resources.
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 import Hero from '../../components/Hero.astro';
 
-import helloWorldExample from '../../../../examples/docs/hello-world.ts?raw';
+const quickstartSnippet = `import { Agent, run, tool } from '@openai/agents';
+import { z } from 'zod';
+
+type Weather = { city: string };
+
+const getWeather = tool({
+name: 'get_weather',
+description: 'Get the weather for a given city',
+parameters: z.object({ city: z.string() }),
+execute: async ({ city }: Weather) => \`The weather in ${city} is sunny\`,
+});
+
+const assistant = new Agent({
+name: 'Concierge',
+instructions: 'Help builders explore the Agents SDK.',
+tools: [getWeather],
+});
+
+const result = await run(
+assistant,
+'Share a launch checklist for my next agentic feature.',
+);
+
+console.log(result.finalOutput);
+`;
 
 <Hero>
-  <Fragment slot="title">Quickstart</Fragment>
-  <Fragment slot="description">Build your first agent in minutes.</Fragment>
-  <Fragment slot="cta">Let's build</Fragment>
+  <Fragment slot="title">Build a complete agent platform</Fragment>
+  <Fragment slot="description">
+    Everything you need—from orchestration to realtime voice—to design, test,
+    and ship powerful agentic experiences.
+  </Fragment>
+  <Fragment slot="cta">Start building</Fragment>
 </Hero>
 
-## Overview
+<section class="not-prose mt-16 space-y-6">
+  <h2 class="text-3xl font-semibold text-slate-900 dark:text-white">
+    One professional hub for every detail.
+  </h2>
+  <p class="text-lg text-slate-600 dark:text-slate-300">
+    This overview distills the Agents SDK into a single destination so you can
+    evaluate capabilities, understand the package ecosystem, and ship faster.
+  </p>
+  <div class="grid gap-6 lg:grid-cols-3">
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-xl font-semibold text-slate-900 dark:text-white">
+        Production ready primitives
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Compose agents, tools, guardrails, handoffs, and realtime voice loops to
+        deliver robust multi-agent applications without bespoke infrastructure.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-xl font-semibold text-slate-900 dark:text-white">
+        Modular package ecosystem
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Use the convenience bundle or mix and match core, OpenAI, realtime, and
+        extensions packages depending on your deployment surface.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-xl font-semibold text-slate-900 dark:text-white">
+        Built-in tracing and safety
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Visualize every run, validate inputs with Zod-powered guardrails, and
+        integrate human-in-the-loop controls when you need higher assurance.
+      </p>
+    </article>
+  </div>
+</section>
 
-The [OpenAI Agents SDK for TypeScript](https://github.com/openai/openai-agents-js)
-enables you to build agentic AI apps in a lightweight, easy-to-use package with
-very few abstractions. It's a production-ready upgrade of our previous
-experimentation for agents,
-[Swarm](https://github.com/openai/swarm/tree/main), that's also [available in Python](https://github.com/openai/openai-agents-python). The Agents SDK has a very
-small set of primitives:
+<section class="not-prose mt-20 space-y-6">
+  <h2 class="text-3xl font-semibold text-slate-900 dark:text-white">
+    Feature highlights
+  </h2>
+  <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        Agent orchestration
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Coordinate multiple agents with automatic tool invocation, streaming
+        responses, and parallel execution when your workflow demands it.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        Guardrails &amp; validation
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Add structured outputs, schema enforcement, and contextual safety checks
+        to keep conversations and actions aligned with expectations.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        Realtime voice experiences
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Ship interruption-aware voice agents over WebRTC or WebSockets with the
+        browser-optimized realtime package.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        Human-in-the-loop
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Integrate approvals or feedback checkpoints wherever policy or customer
+        experience requires direct review.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        Cross-runtime support
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Deploy on Node.js, Deno, Bun, or edge runtimes with Cloudflare Workers
+        compatibility.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        Tracing &amp; evaluation
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Inspect agent runs, fine-tune models, and iterate quickly with built-in
+        telemetry designed for production readiness.
+      </p>
+    </article>
+  </div>
+</section>
 
-- **Agents**, which are LLMs equipped with instructions and tools
-- **Handoffs**, which allow agents to delegate to other agents for specific
-  tasks
-- **Guardrails**, which enable the inputs to agents to be validated
+<section class="mt-20 space-y-6">
+  <h2>Get started in minutes</h2>
+  <p>
+    Install the SDK, create an agent with tools, and execute it with a single
+    function call. The bundled developer experience keeps configuration light
+    while offering deep customization when you need it.
+  </p>
+  <Code lang="typescript" code={quickstartSnippet} title="Launch-ready agent" />
+  <blockquote>
+    Set the <code>OPENAI_API_KEY</code> environment variable before running your
+    script.
+  </blockquote>
+</section>
 
-In combination with TypeScript, these primitives are powerful enough to express
-complex relationships between tools and agents, and allow you to build
-real-world applications without a steep learning curve. In addition, the SDK
-comes with built-in **tracing** that lets you visualize and debug your agentic
-flows, as well as evaluate them and even fine-tune models for your application.
+<section class="not-prose mt-20 space-y-6">
+  <h2 class="text-3xl font-semibold text-slate-900 dark:text-white">
+    Package ecosystem at a glance
+  </h2>
+  <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        @openai/agents
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Convenience bundle that exports the core runtime alongside OpenAI
+        bindings and realtime helpers so you can import from a single package.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        @openai/agents-core
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Framework-agnostic primitives for agents, tools, guardrails, handoffs,
+        and tracing when you want to integrate your own providers.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        @openai/agents-openai
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Provider-specific utilities that make it effortless to call OpenAI APIs
+        from any agent while retaining full type safety.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        @openai/agents-realtime
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Web-first runtime for building realtime voice agents with interruption
+        management and context synchronization.
+      </p>
+    </article>
+    <article class="flex h-full flex-col gap-3 rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">
+        @openai/agents-extensions
+      </h3>
+      <p class="text-slate-600 dark:text-slate-300">
+        Optional productivity enhancements that extend the core runtime with
+        additional tools and workflows.
+      </p>
+    </article>
+  </div>
+</section>
 
-## Why use the Agents SDK
+<section class="mt-20 space-y-6">
+  <h2>Deliver with confidence</h2>
+  <ol class="space-y-4">
+    <li>
+      <strong>Design.</strong> Describe your agents, connect tools, and define
+      guardrails so the SDK understands your operating constraints.
+    </li>
+    <li>
+      <strong>Orchestrate.</strong> Let the agent loop manage tool calls,
+      handoffs, and streaming updates while you focus on user experience.
+    </li>
+    <li>
+      <strong>Deploy.</strong> Run on your preferred runtime, observe traces,
+      gather feedback, and iterate quickly with built-in evaluation support.
+    </li>
+  </ol>
+</section>
 
-The SDK has two driving design principles:
-
-1. Enough features to be worth using, but few enough primitives to make it quick
-   to learn.
-2. Works great out of the box, but you can customize exactly what happens.
-
-Here are the main features of the SDK:
-
-- **Agent loop**: Built-in agent loop that handles calling tools, sending results to
-  the LLM, and looping until the LLM is done.
-- **TypeScript-first**: Use built-in language features to orchestrate and chain
-  agents, rather than needing to learn new abstractions.
-- **Handoffs**: A powerful feature to coordinate and delegate between multiple
-  agents.
-- **Guardrails**: Run input validations and checks in parallel to your agents,
-  breaking early if the checks fail.
-- **Function tools**: Turn any TypeScript function into a tool, with automatic
-  schema generation and Zod-powered validation.
-- **Tracing**: Built-in tracing that lets you visualize, debug and monitor your
-  workflows, as well as use the OpenAI suite of evaluation, fine-tuning and
-  distillation tools.
-- **Realtime Agents**: Build powerful voice agents including automatic interruption
-  detection, context management, guardrails, and more.
-
-## Installation
-
-```bash
-npm install @openai/agents zod@3
-```
-
-## Hello world example
-
-<Code lang="typescript" code={helloWorldExample} title="Hello World" />
-
-(_If running this, ensure you set the `OPENAI_API_KEY` environment variable_)
-
-```bash
-export OPENAI_API_KEY=sk-...
-```
+<section class="not-prose mt-20 space-y-6">
+  <h2 class="text-3xl font-semibold text-slate-900 dark:text-white">
+    Continue exploring
+  </h2>
+  <div class="grid gap-4 md:grid-cols-2">
+    <LinkCard title="Quickstart guide" href="/guides/quickstart">
+      Follow a step-by-step tutorial that mirrors the workflow on this page.
+    </LinkCard>
+    <LinkCard
+      title="Explore runnable examples"
+      href="https://github.com/openai/openai-agents-js/tree/main/examples"
+    >
+      Dive into ready-to-run projects covering tools, guardrails, handoffs,
+      streaming, realtime voice, and more.
+    </LinkCard>
+    <LinkCard title="API reference" href="/api/openai/agents">
+      Inspect every exported class, helper, and type in the SDK.
+    </LinkCard>
+    <LinkCard
+      title="Troubleshooting &amp; environments"
+      href="/guides/troubleshooting"
+    >
+      Validate runtime support and resolve common integration questions.
+    </LinkCard>
+  </div>
+</section>
