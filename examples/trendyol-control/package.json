@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "trendyol-control",
+  "scripts": {
+    "build-check": "tsc --noEmit",
+    "start": "tsx index.ts",
+    "start:interactive": "tsx index.ts --interactive",
+    "start:web": "tsx server.ts"
+  },
+  "dependencies": {
+    "@openai/agents": "workspace:*",
+    "zod": "^3.25.40"
+  }
+}
