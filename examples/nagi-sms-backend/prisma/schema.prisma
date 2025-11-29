@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Campaign {
+  id        String    @id @default(cuid())
+  name      String
+  message   String
+  createdAt DateTime  @default(now())
+  messages  Message[]
+  jobs      Job[]
+}
+
+model Message {
+  id               String    @id @default(cuid())
+  campaignId       String
+  to               String
+  status           MessageStatus
+  variables        Json?
+  error            String?
+  providerResponse String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  campaign         Campaign  @relation(fields: [campaignId], references: [id])
+}
+
+enum MessageStatus {
+  pending
+  sent
+  failed
+}
+
+model Unsubscribe {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Job {
+  id         String   @id @default(cuid())
+  type       String
+  campaignId String?
+  status     JobStatus
+  stats      String?
+  createdAt  DateTime @default(now())
+  finishedAt DateTime?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id])
+}
+
+enum JobStatus {
+  running
+  finished
+  failed
+}
